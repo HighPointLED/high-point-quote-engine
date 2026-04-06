@@ -14,17 +14,9 @@ import {
     calculateTotalLinearFeet,
     formatCurrency,
 } from './utils/calculator';
+import { FINANCING_TERMS, PACKAGE_MULTIPLIERS } from './constants';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
-
-// Material cost multiplier applied per package tier
-const PACKAGE_MULTIPLIERS: Record<PackageTier, number> = {
-    good: 1.0,
-    better: 1.15,
-    best: 1.3,
-};
-
-const FINANCING_TERMS = [12, 24, 36];
 
 const App = () => {
     const [customer, setCustomer] = useState<CustomerData>({

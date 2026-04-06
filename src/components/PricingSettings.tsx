@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { PricingData } from '../types';
+import { MIN_MARGIN, MAX_MARGIN } from '../constants';
 
 interface Props {
     pricing: PricingData;
@@ -81,8 +82,8 @@ const PricingSettings: React.FC<Props> = ({ pricing, onChange }) => {
                         <input
                             type="number"
                             name="marginPercent"
-                            min="0"
-                            max="99"
+                            min={MIN_MARGIN}
+                            max={MAX_MARGIN}
                             step="0.1"
                             value={pricing.marginPercent}
                             onChange={handleChange}

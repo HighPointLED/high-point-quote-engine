@@ -1,6 +1,7 @@
 // src/utils/calculator.ts
 
 import { MeasurementData } from '../types';
+import { MIN_MARGIN, MAX_MARGIN } from '../constants';
 
 /**
  * Sum all linear-foot measurements to get the total linear feet of the installation.
@@ -38,7 +39,7 @@ function calculateFinalPrice(
     marginPercent: number,
 ): number {
     const subtotal = materialCost + labor + controller + wire + serviceFee;
-    const margin = Math.min(Math.max(marginPercent, 0), 99) / 100;
+    const margin = Math.min(Math.max(marginPercent, MIN_MARGIN), MAX_MARGIN) / 100;
     return subtotal / (1 - margin);
 }
 

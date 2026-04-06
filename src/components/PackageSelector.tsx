@@ -5,6 +5,7 @@ import {
     calculateMaterialCost,
     formatCurrency,
 } from '../utils/calculator';
+import { PACKAGE_MULTIPLIERS } from '../constants';
 
 interface Props {
     selectedPackage: PackageTier;
@@ -16,13 +17,11 @@ interface Props {
 const PACKAGES: {
     tier: PackageTier;
     label: string;
-    multiplier: number;
     features: string[];
 }[] = [
     {
         tier: 'good',
         label: 'Good',
-        multiplier: 1.0,
         features: [
             'Standard LED pixel lights',
             '16 million color options',
@@ -33,7 +32,6 @@ const PACKAGES: {
     {
         tier: 'better',
         label: 'Better',
-        multiplier: 1.15,
         features: [
             'Premium LED pixel lights',
             '16 million color options',
@@ -45,7 +43,6 @@ const PACKAGES: {
     {
         tier: 'best',
         label: 'Best',
-        multiplier: 1.3,
         features: [
             'Elite LED pixel lights',
             '16 million color options',
@@ -79,8 +76,8 @@ const PackageSelector: React.FC<Props> = ({
         <div>
             <h2>Select a Package</h2>
             <div style={{ display: 'flex', justifyContent: 'space-around', gap: '10px' }}>
-                {PACKAGES.map(({ tier, label, multiplier, features }) => {
-                    const price = getPrice(multiplier);
+                {PACKAGES.map(({ tier, label, features }) => {
+                    const price = getPrice(PACKAGE_MULTIPLIERS[tier]);
                     const isSelected = selectedPackage === tier;
                     return (
                         <div
