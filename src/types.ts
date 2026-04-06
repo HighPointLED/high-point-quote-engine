@@ -1,34 +1,36 @@
 // src/types.ts
 
-// Interface for Customer Information
-export interface CustomerInfo {
-    id: string;
-    name: string;
-    email: string;
-    phone: string;
+// Customer information entered in the form
+export interface CustomerData {
+    customerName: string;
     address: string;
+    phone: string;
+    email: string;
+    referralSource: string;
+    notes: string;
 }
 
-// Interface for Measurements
-export interface Measurements {
-    width: number;
-    height: number;
-    depth: number;
-    weight?: number;
+// Linear-foot measurements for each section of the installation
+export interface MeasurementData {
+    roofline: number;
+    peaks: number;
+    ridges: number;
+    dormers: number;
+    garage: number;
+    rearRoofline: number;
+    patio: number;
+    landscapeLighting: number;
 }
 
-// Interface for Pricing
-export interface Pricing {
-    basePrice: number;
-    discount?: number;
-    finalPrice: number;
+// Configurable pricing inputs used for cost calculation
+export interface PricingData {
+    costPerFoot: number;
+    labor: number;
+    controller: number;
+    wire: number;
+    serviceFee: number;
+    marginPercent: number;
 }
 
-// Interface for Quotes
-export interface Quote {
-    quoteId: string;
-    customer: CustomerInfo;
-    measurements: Measurements;
-    pricing: Pricing;
-    createdAt: string;
-}
+// Available package tiers
+export type PackageTier = 'good' | 'better' | 'best';

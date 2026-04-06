@@ -1,32 +1,67 @@
 // src/utils/calculator.ts
 
+import { MeasurementData } from '../types';
+import { MIN_MARGIN, MAX_MARGIN } from '../constants';
+
 /**
- * Calculate the quote based on specified parameters.
- * @param quantity - The quantity of items.
- * @param pricePerItem - The price of each item.
- * @returns The total quote amount.
+ * Sum all linear-foot measurements to get the total linear feet of the installation.
  */
-function calculateQuote(quantity: number, pricePerItem: number): number {
-    return quantity * pricePerItem;
+function calculateTotalLinearFeet(measurements: MeasurementData): number {
+    return (
+        measurements.roofline +
+        measurements.peaks +
+        measurements.ridges +
+        measurements.dormers +
+        measurements.garage +
+        measurements.rearRoofline +
+        measurements.patio +
+        measurements.landscapeLighting
+    );
 }
 
 /**
- * Calculate monthly payments based on total amount and payment term.
- * @param totalAmount - The total amount to be financed.
- * @param months - The number of months to pay off the loan.
- * @returns The monthly payment amount.
+ * Calculate material cost from total linear feet and cost per foot.
  */
-function calculateMonthlyPayments(totalAmount: number, months: number): number {
+function calculateMaterialCost(totalLinearFeet: number, costPerFoot: number): number {
+    return totalLinearFeet * costPerFoot;
+}
+
+/**
+ * Calculate the final customer price by applying a gross-margin markup.
+ * finalPrice = subtotal / (1 - marginPercent / 100)
+ */
+function calculateFinalPrice(
+    materialCost: number,
+    labor: number,
+    controller: number,
+    wire: number,
+    serviceFee: number,
+    marginPercent: number,
+): number {
+    const subtotal = materialCost + labor + controller + wire + serviceFee;
+    const margin = Math.min(Math.max(marginPercent, MIN_MARGIN), MAX_MARGIN) / 100;
+    return subtotal / (1 - margin);
+}
+
+/**
+ * Calculate a simple monthly payment with no interest.
+ */
+function calculateMonthlyPayment(totalAmount: number, months: number): number {
+    if (months <= 0) return totalAmount;
     return totalAmount / months;
 }
 
 /**
- * Format a number as a currency string.
- * @param amount - The amount to format.
- * @returns A string formatted as currency.
+ * Format a number as a USD currency string.
  */
 function formatCurrency(amount: number): string {
     return `$${amount.toFixed(2)}`;
 }
 
-export { calculateQuote, calculateMonthlyPayments, formatCurrency };
+export {
+    calculateTotalLinearFeet,
+    calculateMaterialCost,
+    calculateFinalPrice,
+    calculateMonthlyPayment,
+    formatCurrency,
+};

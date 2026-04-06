@@ -1,57 +1,45 @@
 import React from 'react';
+import { MeasurementData } from '../types';
 
-const MeasurementInputs: React.FC = () => {
+interface Props {
+    measurements: MeasurementData;
+    onChange: (measurements: MeasurementData) => void;
+}
+
+const fields: { name: keyof MeasurementData; label: string }[] = [
+    { name: 'roofline', label: 'Roofline (ft)' },
+    { name: 'peaks', label: 'Peaks (ft)' },
+    { name: 'ridges', label: 'Ridges (ft)' },
+    { name: 'dormers', label: 'Dormers (ft)' },
+    { name: 'garage', label: 'Garage (ft)' },
+    { name: 'rearRoofline', label: 'Rear Roofline (ft)' },
+    { name: 'patio', label: 'Patio (ft)' },
+    { name: 'landscapeLighting', label: 'Landscape Lighting (ft)' },
+];
+
+const MeasurementInputs: React.FC<Props> = ({ measurements, onChange }) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = parseFloat(e.target.value) || 0;
+        onChange({ ...measurements, [e.target.name]: value });
+    };
+
     return (
         <div>
             <h2>Measurement Inputs</h2>
-            <div>
-                <label>
-                    Roofline:
-                    <input type='number' name='roofline' />
-                </label>
-            </div>
-            <div>
-                <label>
-                    Peaks:
-                    <input type='number' name='peaks' />
-                </label>
-            </div>
-            <div>
-                <label>
-                    Ridges:
-                    <input type='number' name='ridges' />
-                </label>
-            </div>
-            <div>
-                <label>
-                    Dormers:
-                    <input type='number' name='dormers' />
-                </label>
-            </div>
-            <div>
-                <label>
-                    Garage:
-                    <input type='number' name='garage' />
-                </label>
-            </div>
-            <div>
-                <label>
-                    Rear Roofline:
-                    <input type='number' name='rearRoofline' />
-                </label>
-            </div>
-            <div>
-                <label>
-                    Patio:
-                    <input type='number' name='patio' />
-                </label>
-            </div>
-            <div>
-                <label>
-                    Landscape Lighting:
-                    <input type='number' name='landscapeLighting' />
-                </label>
-            </div>
+            {fields.map(({ name, label }) => (
+                <div key={name}>
+                    <label>
+                        {label}:
+                        <input
+                            type="number"
+                            name={name}
+                            min="0"
+                            value={measurements[name]}
+                            onChange={handleChange}
+                        />
+                    </label>
+                </div>
+            ))}
         </div>
     );
 };
